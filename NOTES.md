@@ -75,14 +75,7 @@ välj det du är mest bekväm med.
 * **Fix:** change the position
 * **Test:** By going thought the application
 
-### 1. <kort rubrik>
-
-* **Where:** `src/...:rad`
-* **Symptom:**
-* **Root cause:**
-* **Fix:**
-* **Test:** (nytt test, befintligt test, eller inget – och varför)
-
-## Things I chose not to do
+## Things I chose not to do 
 
 ## Questions / assumptions
+The assignment i think should have date as Sat Sep 13 275760 00:00:00 GMT+0000 (Coordinated Universal Time) so it can take few hours instead of D/m/yyyy 
