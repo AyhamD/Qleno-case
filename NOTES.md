@@ -67,6 +67,13 @@ välj det du är mest bekväm med.
 * **Fix:** To handle as date and it should start and end be declared before check. One miner thing the start should not be before end date
 * **Test:** I found the error when i tried to add new assignment
 
+### 7. <error handler>
+
+* **Where:** `src/app.js`
+* **Symptom:** The error handler run before the routes.
+* **Root cause:** The error handler run before the routes that make the throw error the handler do not work
+* **Fix:** change the position
+* **Test:** By going thought the application
 
 ### 1. <kort rubrik>
 
