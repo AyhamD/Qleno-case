@@ -1,42 +1,48 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const store = require('../data/store');
-const { ValidationError, NotFoundError, ConflictError } = require('../errors');
+const express = require("express");
+const store = require("../data/store");
+const { ValidationError, NotFoundError, ConflictError } = require("../errors");
 
 const router = express.Router();
 
 // GET /api/assignments?consultantId=1
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const all = await store.getAssignments();
-
+  const consultantId = req.query.consultantId
+    ? Number(req.query.consultantId)
+    : undefined;
   const items =
-    req.query.consultantId === undefined
+    consultantId === undefined
       ? all
-      : all.filter((assignment) => assignment.consultantId === Number(req.query.consultantId));
+      : all.filter((assignment) => assignment.consultantId === consultantId);
 
   res.json({ items, total: items.length });
 });
 
 // POST /api/assignments
 // A consultant must never hold two assignments that overlap in time.
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const { consultantId, title, startDate, endDate } = req.body ?? {};
+  const start = new Date(startDate);
+  const end = new Date(endDate);
 
   if (!title) {
-    throw new ValidationError('title is required');
+    throw new ValidationError("title is required");
   }
-  if (!startDate || !endDate) {
-    throw new ValidationError('startDate and endDate are required');
+  //Number need to be valid dates to make sure the start and end dates are correct
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    throw new ValidationError("startDate and endDate must be valid dates");
+  }
+  // start should be before end
+  if (end <= start) {
+    throw new ValidationError("endDate must be after startDate");
   }
 
   const consultant = await store.findConsultant(consultantId);
   if (!consultant) {
     throw new NotFoundError(`No consultant with id ${consultantId}`);
   }
-
-  const start = new Date(startDate);
-  const end = new Date(endDate);
 
   const existing = await store.getAssignments();
   const clash = existing
@@ -49,7 +55,7 @@ router.post('/', async (req, res) => {
 
   if (clash) {
     throw new ConflictError(
-      `${consultant.name} is already booked ${clash.startDate} - ${clash.endDate}`
+      `${consultant.name} is already booked ${clash.startDate} - ${clash.endDate}`,
     );
   }
 

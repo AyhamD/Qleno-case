@@ -59,6 +59,15 @@ välj det du är mest bekväm med.
 * **Test:** Tested by trying to change the id and that worked. Since we are saving locally i terminated the server and run it again then added the logic. Tested again. Worked fine i could not change the id. 
 
 
+### 7. <Start and end date>
+
+* **Where:** `src/routes/assignments.js`
+* **Symptom:** In create assignments dates are not validated before use.
+* **Root cause:** 
+* **Fix:** To handle as date and it should start and end be declared before check. One miner thing the start should not be before end date
+* **Test:** I found the error when i tried to add new assignment
+
+
 ### 1. <kort rubrik>
 
 * **Where:** `src/...:rad`
